@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bl2u4x4k8k2n3"]
+
+[ext_resource type="PackedScene" uid="uid://dl47r17efdmca" path="res://Character_09.fbx" id="1_oh4s1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jsk3o"]
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="Character_09" unique_id=1626995868 instance=ExtResource("1_oh4s1")]
+
+[node name="Character_09" parent="Skeleton3D" parent_id_path=PackedInt32Array(743537505) index="0" unique_id=867823509]
+surface_material_override/0 = SubResource("StandardMaterial3D_jsk3o")

@@ -1,0 +1,139 @@
+[gd_scene format=3 uid="uid://0m5u2ifp8h44"]
+
+[ext_resource type="PackedScene" uid="uid://nw2l2m8kcgjn" path="res://tabel.tscn" id="1_a202f"]
+[ext_resource type="PackedScene" uid="uid://cucgqld2gspul" path="res://can_soup.tscn" id="2_noarx"]
+[ext_resource type="PackedScene" uid="uid://b4d4vxu21iacb" path="res://can_soup2.tscn" id="3_a0tk4"]
+[ext_resource type="PackedScene" uid="uid://dk7gnk2qkrhcw" path="res://tv.tscn" id="4_r3fl7"]
+[ext_resource type="PackedScene" uid="uid://bl2u4x4k8k2n3" path="res://character_09.tscn" id="5_jka67"]
+[ext_resource type="Texture2D" uid="uid://dgvoqxn4di0gu" path="res://Stone_tiles_04.png" id="6_i5arm"]
+[ext_resource type="Texture2D" uid="uid://df2ehqtkesyhh" path="res://Stone_tiled_bricks_12.png" id="7_wc5p8"]
+[ext_resource type="Texture2D" uid="uid://83b2fqevp6an" path="res://Stone_tiled_bricks_01.png" id="8_jsk3o"]
+[ext_resource type="PackedScene" uid="uid://bu15pelyxppwo" path="res://phone.fbx" id="9_4arys"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_wc5p8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3fl7"]
+transparency = 1
+albedo_color = Color(0.5024661, 0.7598255, 0.6557444, 0.45882353)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hjetu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_egaxo"]
+albedo_texture = ExtResource("6_i5arm")
+uv1_scale = Vector3(4.9, 4.9, 4.9)
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jsk3o"]
+albedo_texture = ExtResource("7_wc5p8")
+uv1_scale = Vector3(4.9, 4.9, 4.9)
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4arys"]
+albedo_texture = ExtResource("8_jsk3o")
+uv1_scale = Vector3(4.9, 4.9, 4.9)
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hjetu"]
+albedo_texture = ExtResource("7_wc5p8")
+uv1_scale = Vector3(4.965, 4.965, 4.965)
+texture_filter = 0
+
+[sub_resource type="Environment" id="Environment_hjetu"]
+background_mode = 1
+
+[node name="Node3D" type="Node3D" unique_id=1118073595]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=919060322]
+transform = Transform3D(1, 0, 0, 0, 0.9025321, 0.43062246, 0, -0.43062246, 0.9025321, -0.007846832, 2.4738128, 1.561557)
+current = true
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1739438582]
+transform = Transform3D(1, 0, 0, 0, 0.20546722, 0.97866404, 0, -0.97866404, 0.20546722, 0, 2.758724, 0.42971337)
+light_energy = 1.475
+light_indirect_energy = 0.525
+light_volumetric_fog_energy = 0.525
+spot_range = 2.021
+spot_angle = 36.09
+
+[node name="SpotLight3D4" type="SpotLight3D" parent="." unique_id=1732877521]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 8.307934, 0.42971337)
+light_energy = 0.525
+light_indirect_energy = 0.525
+light_volumetric_fog_energy = 0.525
+spot_range = 12.371
+spot_angle = 50.35
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="." unique_id=989746270]
+transform = Transform3D(1, 0, 0, 0, 0.870308, 0.492508, 0, -0.492508, 0.870308, -0.021240115, 3.4266293, -1.491848)
+light_energy = 1.475
+light_indirect_energy = 0.525
+light_volumetric_fog_energy = 0.525
+spot_range = 4.605
+spot_attenuation = 1.59
+spot_angle = 50.35
+
+[node name="SpotLight3D3" type="SpotLight3D" parent="." unique_id=362515199]
+transform = Transform3D(1, 0, 0, 0, 0.34590176, 0.93827075, 0, -0.93827075, 0.34590176, -0.021240115, 3.935066, -5.3988967)
+light_energy = 1.475
+light_indirect_energy = 0.525
+light_volumetric_fog_energy = 0.525
+spot_range = 4.605
+spot_attenuation = 1.59
+spot_angle = 78.86
+
+[node name="Tabel" parent="." unique_id=1104612629 instance=ExtResource("1_a202f")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0.6701658, 0.36286187)
+
+[node name="button1" parent="." unique_id=2026353935 instance=ExtResource("2_noarx")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.26, 1.2301657, 0.81286186)
+
+[node name="can_soup" parent="." unique_id=705807035 instance=ExtResource("3_a0tk4")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.26, 1.2301657, 0.81286186)
+
+[node name="Tv" parent="." unique_id=382501209 instance=ExtResource("4_r3fl7")]
+transform = Transform3D(0.755, 0, 0, 0, 0.755, 0, 0, 0, 0.755, -0.03041315, 1.7150357, -0.2387656)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=531902072]
+transform = Transform3D(6.268, 0, 0, 0, 13.92, 0, 0, 0, 0.093, 0, 0.6701658, -4.67)
+mesh = SubResource("BoxMesh_wc5p8")
+surface_material_override/0 = SubResource("StandardMaterial3D_r3fl7")
+
+[node name="npc" parent="." unique_id=1626995868 instance=ExtResource("5_jka67")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1275942, -5.589)
+
+[node name="pol" type="MeshInstance3D" parent="." unique_id=388411222]
+transform = Transform3D(6.89, 0, 0, 0, 6.89, 0, 0, 0, 6.89, 0, 0, 0)
+mesh = SubResource("PlaneMesh_hjetu")
+surface_material_override/0 = SubResource("StandardMaterial3D_egaxo")
+
+[node name="wall1" type="MeshInstance3D" parent="." unique_id=352252253]
+transform = Transform3D(-3.0117147e-07, 6.89, -2.6329245e-14, -3.0117147e-07, 1.31646225e-14, 6.89, 6.89, 3.0117147e-07, 3.0117147e-07, -4.2071085, 0, 0)
+mesh = SubResource("PlaneMesh_hjetu")
+surface_material_override/0 = SubResource("StandardMaterial3D_jsk3o")
+
+[node name="wall2" type="MeshInstance3D" parent="." unique_id=1424289565]
+transform = Transform3D(-3.0117147e-07, -6.89, -3.0117147e-07, 0, -3.0117147e-07, 6.89, -6.89, 3.0117147e-07, 1.31646225e-14, 4.386759, 0, 0)
+mesh = SubResource("PlaneMesh_hjetu")
+surface_material_override/0 = SubResource("StandardMaterial3D_jsk3o")
+
+[node name="wall3" type="MeshInstance3D" parent="." unique_id=428662493]
+transform = Transform3D(-6.8899994, 6.023429e-07, 2.6329243e-14, 0, -3.0117144e-07, 6.8899994, 6.023429e-07, 6.8899994, 3.0117144e-07, 0, 0, -6.585)
+mesh = SubResource("PlaneMesh_hjetu")
+surface_material_override/0 = SubResource("StandardMaterial3D_4arys")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=1308114855]
+transform = Transform3D(6.89, 0, 0, 0, 6.89, 0, 0, 0, 0.05, 0, 2.4155202, -4.536564)
+operation = 2
+size = Vector3(1.7042236, 1.8828125, 1)
+material = SubResource("StandardMaterial3D_hjetu")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D2" unique_id=1789502464]
+transform = Transform3D(0.5667634, 0, 0, 0, 0.5667634, 0, 0, 0, 78.1, 0, 0.038178533, 18.39502)
+operation = 2
+size = Vector3(1, 1, 1.4923096)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=448268753]
+environment = SubResource("Environment_hjetu")
+
+[node name="phone" parent="." unique_id=1775934888 instance=ExtResource("9_4arys")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8165312, 1.2405264, 0)
