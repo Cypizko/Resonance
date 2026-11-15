@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://0m5u2ifp8h44"]
 
 [ext_resource type="PackedScene" uid="uid://nw2l2m8kcgjn" path="res://tabel.tscn" id="1_a202f"]
+[ext_resource type="Script" uid="uid://hk3bh6gxtvrt" path="res://camera_3d.gd" id="1_cdqbm"]
 [ext_resource type="PackedScene" uid="uid://cucgqld2gspul" path="res://can_soup.tscn" id="2_noarx"]
 [ext_resource type="PackedScene" uid="uid://b4d4vxu21iacb" path="res://can_soup2.tscn" id="3_a0tk4"]
 [ext_resource type="PackedScene" uid="uid://dk7gnk2qkrhcw" path="res://tv.tscn" id="4_r3fl7"]
@@ -9,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://df2ehqtkesyhh" path="res://Stone_tiled_bricks_12.png" id="7_wc5p8"]
 [ext_resource type="Texture2D" uid="uid://83b2fqevp6an" path="res://Stone_tiled_bricks_01.png" id="8_jsk3o"]
 [ext_resource type="PackedScene" uid="uid://bu15pelyxppwo" path="res://phone.fbx" id="9_4arys"]
+[ext_resource type="PackedScene" uid="uid://pxku2bjwg2mu" path="res://source/ClipBoard.fbx" id="10_tereu"]
+[ext_resource type="Script" uid="uid://djf0dno2glkia" path="res://area_3d.gd" id="11_cdqbm"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_wc5p8"]
 
@@ -41,11 +44,29 @@ texture_filter = 0
 [sub_resource type="Environment" id="Environment_hjetu"]
 background_mode = 1
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_jxpwx"]
+size = Vector3(1, 1.0356445, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jxpwx"]
+bg_color = Color(0.95686275, 0.92156863, 0.8156863, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cdqbm"]
+load_path = "res://.godot/imported/Backgroudn.png-c67803a4001267bed90242d8196b10fc.ctex"
+
 [node name="Node3D" type="Node3D" unique_id=1118073595]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=919060322]
 transform = Transform3D(1, 0, 0, 0, 0.9025321, 0.43062246, 0, -0.43062246, 0.9025321, -0.007846832, 2.4738128, 1.561557)
 current = true
+script = ExtResource("1_cdqbm")
+
+[node name="InteractionRay" type="RayCast3D" parent="Camera3D" unique_id=1960409408]
+target_position = Vector3(0, 0, -2.5)
+collide_with_areas = true
 
 [node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1739438582]
 transform = Transform3D(1, 0, 0, 0, 0.20546722, 0.97866404, 0, -0.97866404, 0.20546722, 0, 2.758724, 0.42971337)
@@ -102,7 +123,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_r3fl7")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1275942, -5.589)
 
 [node name="pol" type="MeshInstance3D" parent="." unique_id=388411222]
-transform = Transform3D(6.89, 0, 0, 0, 6.89, 0, 0, 0, 6.89, 0, 0, 0)
+transform = Transform3D(6.852907, 0, 0, 0, 9.061443, 0, 0, 0, 6.852907, 0, 0, 0)
 mesh = SubResource("PlaneMesh_hjetu")
 surface_material_override/0 = SubResource("StandardMaterial3D_egaxo")
 
@@ -112,7 +133,7 @@ mesh = SubResource("PlaneMesh_hjetu")
 surface_material_override/0 = SubResource("StandardMaterial3D_jsk3o")
 
 [node name="wall2" type="MeshInstance3D" parent="." unique_id=1424289565]
-transform = Transform3D(-3.0117147e-07, -6.89, -3.0117147e-07, 0, -3.0117147e-07, 6.89, -6.89, 3.0117147e-07, 1.31646225e-14, 4.386759, 0, 0)
+transform = Transform3D(-3.0117147e-07, -6.89, -3.0117147e-07, 0, -3.0117147e-07, 6.89, -6.89, 3.0117147e-07, 1.31646225e-14, 4.386759, 0.024486542, 0)
 mesh = SubResource("PlaneMesh_hjetu")
 surface_material_override/0 = SubResource("StandardMaterial3D_jsk3o")
 
@@ -128,7 +149,7 @@ size = Vector3(1.7042236, 1.8828125, 1)
 material = SubResource("StandardMaterial3D_hjetu")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D2" unique_id=1789502464]
-transform = Transform3D(0.5667634, 0, 0, 0, 0.5667634, 0, 0, 0, 78.1, 0, 0.038178533, 18.39502)
+transform = Transform3D(0.56676334, 0, 0, 0, 0.56676334, 0, 0, 0, 78.1, -0.00023753618, 0.03511542, 18.549011)
 operation = 2
 size = Vector3(1, 1, 1.4923096)
 
@@ -136,4 +157,118 @@ size = Vector3(1, 1, 1.4923096)
 environment = SubResource("Environment_hjetu")
 
 [node name="phone" parent="." unique_id=1775934888 instance=ExtResource("9_4arys")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8165312, 1.2405264, 0)
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 0.873856, 1.2405264, 0.24443841)
+
+[node name="list" parent="." unique_id=1171468117 instance=ExtResource("10_tereu")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.8842463, 1.2183435, 0.6835624)
+
+[node name="Area3D" type="Area3D" parent="list" unique_id=1307091679 node_paths=PackedStringArray("rules_ui")]
+script = ExtResource("11_cdqbm")
+rules_ui = NodePath("../../RulesUI")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="list/Area3D" unique_id=1339459203]
+transform = Transform3D(0.9514067, 0, 0, 0, 0.11627139, 0, 0, 0, 1.4326292, -0.003181696, 0.06275582, 0.15808785)
+shape = SubResource("BoxShape3D_jxpwx")
+
+[node name="Marker3D" type="Marker3D" parent="list" unique_id=1179973531]
+
+[node name="RulesUI" type="CanvasLayer" parent="." unique_id=1407379807]
+visible = false
+
+[node name="Control" type="Control" parent="RulesUI" unique_id=603166226]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1155.0
+offset_bottom = 663.0
+mouse_filter = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="RulesUI/Control" unique_id=536247214]
+layout_mode = 0
+offset_left = 425.0
+offset_top = 156.0
+offset_right = 725.0
+offset_bottom = 568.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jxpwx")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="RulesUI/Control" unique_id=1380495209]
+layout_mode = 0
+offset_left = 427.0
+offset_top = 159.0
+offset_right = 726.0
+offset_bottom = 565.0
+mouse_filter = 1
+theme_override_colors/default_color = Color(0.16862746, 0.16862746, 0.16862746, 1)
+bbcode_enabled = true
+text = "[center][b][color=#8b0000]УПРАВЛІННЯ № 04-Б[/color][/b]
+[color=#555555]ТАЄМНО. ДЛЯ СЛУЖБОВОГО КОРИСТУВАННЯ[/color][/center]
+
+[center][b]ПАМ'ЯТКА ОПЕРАТОРА[/b][/center]
+
+[b]Порядок перевірки достовірності показань:[/b]
+1. Уважно вислухайте показання піддослідного.
+2. Спостерігайте за показниками осцилографа протягом усієї відповіді.
+3. Стабільна лінія без різких відхилень свідчить про [color=#006600][b]ПРАВДУ[/b][/color].
+4. Три або більше різких виходів показників у червону зону свідчать про [color=#aa0000][b]БРЕХНЮ[/b][/color].
+5. Металевий зрив голосу вважати додатковою ознакою обману.
+
+[b]ПОРЯДОК ПРИЙНЯТТЯ РІШЕННЯ[/b]
+• [color=#006600][b]ПРАВДА[/b][/color] — натиснути кнопку «ПРОПУСТИТИ».
+• [color=#aa0000][b]БРЕХНЯ[/b][/color] — натиснути кнопку «РОЗРЯД».
+
+[b][color=#aa0000]УВАГА![/color][/b]
+- Не приймайте рішення до завершення показань.
+- Не відволікайтеся на сторонні звуки.
+- У разі появи аварійного сигналу зберігайте спокій.
+- Не залишайте робочого місця до завершення сеансу.
+
+[center][b][color=#aa0000]ПОМИЛКА ОПЕРАТОРА НЕ ЗВІЛЬНЯЄ ВІД ВІДПОВІДАЛЬНОСТІ.[/color][/b][/center]
+
+[center][font_size=12][color=#666666]ВІДДІЛ ТЕХНІЧНОГО КОНТРОЛЮ • ПРИМІРНИК № 17[/color][/font_size][/center]
+[center][b]ПАМ'ЯТАЙТЕ: ПРИЛАД НЕ ПОМИЛЯЄТЬСЯ.[/b][/center]
+
+[color=#cc0000][i]Рукописна примітка червоним олівцем:[/i][/color]
+[color=#ff3333][i]«ВОНИ ПОЧИНАЮТЬ РОЗУМІТИ, ЩО ТИ РОБИШ…»[/i][/color]"
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=148412640]
+
+[node name="Control" type="Control" parent="HUD" unique_id=1049034190]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="HUD/Control" unique_id=110764172]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = -14.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMenu" type="Control" parent="." unique_id=1899177226]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = 4.0
+offset_top = 3.0
+offset_right = 1150.0
+offset_bottom = 652.0
+
+[node name="TextureRect" type="TextureRect" parent="MainMenu" unique_id=900772130]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 2.0
+offset_right = 1143.0
+offset_bottom = 648.0
+texture = SubResource("CompressedTexture2D_cdqbm")
+expand_mode = 1
