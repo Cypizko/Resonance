@@ -12,8 +12,21 @@ var is_on: bool = false
 @onready var audio_player: AudioStreamPlayer3D = $AudioTVPlayer3D      # Плеер для увімкнення
 @onready var loop_audio_player: AudioStreamPlayer3D = $AudioTVLoop3D  # Плеер для гудіння
 
+var label_tv: Label = null
+
 func _ready():
 	print("--- Ініціалізація телевізора ---")
+	
+	# 1. Додаємо вузол до групи "graph", щоб LevelManager міг надсилати сигнали
+	if not is_in_group("graph"):
+		add_to_group("graph")
+		
+	# 2. Знаходимо LabelTV у SubViewport та ховаємо його на старті
+	if sub_viewport and sub_viewport.has_node("LabelTV"):
+		label_tv = sub_viewport.get_node("LabelTV") as Label
+		if label_tv:
+			label_tv.visible = false
+			
 	if audio_player:
 		print("Знайдено audio_player: ", audio_player.name)
 		if power_sound:
@@ -35,7 +48,7 @@ func _ready():
 	if sub_viewport:
 		sub_viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
 		
-	# Ставимо звук увімкнення на паузу з самого початку, щоб він був готов до розігріву
+	# Ставимо звук увімкнення на паузу з самого початку, щоб він був готовий до розігріву
 	if audio_player:
 		audio_player.stream_paused = true
 
@@ -82,3 +95,35 @@ func start_ambient_sound():
 func stop_ambient_sound():
 	if loop_audio_player:
 		loop_audio_player.stop()
+
+# === ФУНКЦІЇ КЕРУВАННЯ ТЕКСТОМ (Викликаються з LevelManager через групу "graph") ===
+
+func start_scan_ui():
+	if label_tv:
+		label_tv.visible = true
+		label_tv.text = "[ СКАНУВАННЯ... ]"
+		label_tv.modulate = Color(1.0, 0.7, 0.1) # Помаранчевий колір під час сканування
+
+func show_analysis_complete():
+	if label_tv:
+		label_tv.visible = true
+		label_tv.text = "[ АНАЛІЗ ЗАВЕРШЕНО ]"
+		label_tv.modulate = Color(0.0, 3.0, 0.2) # Яскраво-зелений із сяйвом (HDR)
+
+func reset_scan_ui():
+	if label_tv:
+		label_tv.visible = false
+
+# === ПЕРЕДАЧА СИГНАЛІВ ДО СКРИПТА ГРАФІКА Line2D ===
+
+func trigger_jump():
+	if sub_viewport:
+		for child in sub_viewport.get_children():
+			if child.has_method("trigger_jump"):
+				child.trigger_jump()
+
+func set_level_speed(new_speed: float):
+	if sub_viewport:
+		for child in sub_viewport.get_children():
+			if child.has_method("set_level_speed"):
+				child.set_level_speed(new_speed)

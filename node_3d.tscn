@@ -26,6 +26,7 @@
 [ext_resource type="AudioStream" uid="uid://d4kdyww8rxe4l" path="res://sound_hangup.ogg" id="23_j3e5s"]
 [ext_resource type="AudioStream" uid="uid://cq7q0fsb0cmm7" path="res://sound_pickup.ogg" id="24_nu31w"]
 [ext_resource type="AudioStream" uid="uid://c1jp57nwt3d5g" path="res://sound_ring.ogg" id="25_obt1j"]
+[ext_resource type="AudioStream" uid="uid://wgsrxcioitnd" path="res://beep.wav" id="27_nu31w"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_i0g27"]
 dof_blur_far_enabled = true
@@ -103,6 +104,8 @@ load_path = "res://.godot/imported/Backgroudn.png-c67803a4001267bed90242d8196b10
 data = PackedByteArray("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")
 format = 3
 mix_rate = 96000
+
+[sub_resource type="LabelSettings" id="LabelSettings_hjetu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hjetu"]
 
@@ -447,6 +450,26 @@ volume_db = 1.0
 [node name="SubViewport" type="SubViewport" parent="." unique_id=755942429]
 transparent_bg = true
 
+[node name="LabelTV" type="Label" parent="SubViewport" unique_id=194262290]
+modulate = Color(0, 1, 0, 1)
+self_modulate = Color(0, 1, 0, 1)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -303.925
+offset_top = 37.01
+offset_right = -147.055
+offset_bottom = 88.45
+grow_horizontal = 0
+scale = Vector2(1.9, 1.9)
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_fonts/font = ExtResource("15_ealrb")
+theme_override_font_sizes/font_size = 600
+text = "[ СКАНУВАННЯ... ]"
+label_settings = SubResource("LabelSettings_hjetu")
+horizontal_alignment = 2
+uppercase = true
+
 [node name="Line2D" type="Line2D" parent="SubViewport" unique_id=1434016428 groups=["graph"]]
 points = PackedVector2Array(0, 0, 0, 0)
 default_color = Color(0, 1, 0, 1)
@@ -478,11 +501,16 @@ stream = ExtResource("25_obt1j")
 [node name="TypewriterAudio" type="AudioStreamPlayer3D" parent="phone/Area3D" unique_id=1763513896]
 transform = Transform3D(0.6006006, 0, 1.4901161e-08, 0, 0.60060066, 0, -1.4901161e-08, 0, 0.6006006, 0, 0, 0)
 
-[node name="LevelManager" type="Node" parent="." unique_id=1892336345 node_paths=PackedStringArray("dialogue_layer", "dialogue_label", "room_light") groups=["graph", "level", "level_manager"]]
+[node name="LevelManager" type="Node" parent="." unique_id=1892336345 node_paths=PackedStringArray("dialogue_layer", "dialogue_label", "room_light", "dialogue_audio_player") groups=["graph", "level", "level_manager"]]
 script = ExtResource("16_tcnuu")
 dialogue_layer = NodePath("../DialogueLayer")
 dialogue_label = NodePath("../DialogueLayer/Control/RichTextLabel")
 room_light = NodePath("../SpotLight3D")
+dialogue_audio_player = NodePath("DialogueAudioPlayer")
+
+[node name="DialogueAudioPlayer" type="AudioStreamPlayer3D" parent="LevelManager" unique_id=785649544]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9089792, 1.2190442, 0.31215262)
+stream = ExtResource("27_nu31w")
 
 [node name="blackscreen" type="ColorRect" parent="." unique_id=1455561089]
 visible = false
