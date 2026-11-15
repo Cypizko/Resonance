@@ -11,9 +11,14 @@ config_version=5
 [application]
 
 config/name="Game"
-run/main_scene="uid://0m5u2ifp8h44"
+run/main_scene="uid://yct7wpa2ixwe"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GlobalGameData="*uid://wcetjrvk6h5"
+SettingsManager="*uid://bdn2amx8klu05"
 
 [display]
 

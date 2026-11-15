@@ -9,6 +9,11 @@ extends Node
 @export var inspector_sound: AudioStream
 @export var suspect_sound: AudioStream
 
+@export var light_hum_sound: AudioStream      # Постійний гул лампи
+@export var light_spark_sound: AudioStream    # Короткі іскри / потріскування
+@export var light_hum_player: AudioStreamPlayer3D
+@export var light_spark_player: AudioStreamPlayer3D
+
 var current_level: int = 1
 var max_levels: int = 4
 var is_level_active: bool = false
@@ -87,6 +92,7 @@ func type_text(full_text: String, is_inspector: bool, on_complete: Callable) -> 
 
 func start_game_sequence() -> void:
 	print("Гра почалася, чекаємо вступного дзвінка...")
+	play_hum(true)
 	await get_tree().create_timer(5.0).timeout
 	get_tree().call_group("phone", "start_ringing")
 
@@ -187,16 +193,21 @@ func start_level() -> void:
 func start_level_3_light_sequence() -> void:
 	if not room_light: return
 	room_light.light_energy = 1.0
+	play_hum(true) # Вмикаємо фоновий гул лампи на початку
 	
 	light_script_timer = get_tree().create_timer(5.0)
 	light_script_timer.timeout.connect(func():
 		if not is_level_active: return
 		room_light.light_energy = 0.0
+		play_spark() # Звук іскри/клацання при різкому вимкненні
+		play_hum(false) # Вимикаємо гул у темряві
 		
 		light_script_timer = get_tree().create_timer(7.0)
 		light_script_timer.timeout.connect(func():
 			if not is_level_active: return
 			room_light.light_energy = 1.0
+			play_spark() # Звук іскри при увімкненні
+			play_hum(true) # Знову гуде
 			run_periodic_flicker_loop()
 		)
 	)
@@ -204,11 +215,14 @@ func start_level_3_light_sequence() -> void:
 func run_periodic_flicker_loop() -> void:
 	if not is_level_active or not room_light: return
 	room_light.light_energy = 1.0
+	play_hum(true)
 	
 	light_script_timer = get_tree().create_timer(10.0)
 	light_script_timer.timeout.connect(func():
 		if not is_level_active: return
 		room_light.light_energy = 0.0
+		play_spark()
+		play_hum(false)
 		
 		light_script_timer = get_tree().create_timer(3.0)
 		light_script_timer.timeout.connect(func():
@@ -216,6 +230,42 @@ func run_periodic_flicker_loop() -> void:
 				run_periodic_flicker_loop()
 		)
 	)
+
+# Додаткове випадкове миготіння в процесі (_update_lighting) зі звуком іскор
+func _update_lighting(delta: float) -> void:
+	if is_level_active and current_level >= 3 and room_light and room_light.light_energy > 0.5:
+		if randf() < 0.02: # зменшив шанс, щоб іскри звучали дозовано
+			room_light.light_energy = randf_range(0.3, 1.0)
+			play_spark() # Короткий звук збою під час мерехтіння
+
+	if is_level_active:
+		timer -= delta
+		if timer <= 0:
+			if jumps_done < total_jumps_planned:
+				get_tree().call_group("graph", "trigger_jump")
+				jumps_done += 1
+				timer = randf_range(timer_min, timer_max)
+			else:
+				if not is_measurement_finished:
+					finish_measurement()
+
+# --- ДОПОМІЖНІ ФУНКЦІЇ ДЛЯ КЕРУВАННЯ ЗВУКОМ СВІТЛА ---
+func play_hum(play: bool) -> void:
+	if not light_hum_player: return
+	if light_hum_sound and light_hum_player.stream != light_hum_sound:
+		light_hum_player.stream = light_hum_sound
+		
+	if play:
+		if not light_hum_player.playing:
+			light_hum_player.play()
+	else:
+		if light_hum_player.playing:
+			light_hum_player.stop()
+
+func play_spark() -> void:
+	if not light_spark_player or not light_spark_sound: return
+	light_spark_player.stream = light_spark_sound
+	light_spark_player.play()
 
 func show_suspect_phrase() -> void:
 	var suspect_text = ""
@@ -344,17 +394,22 @@ func trigger_game_ending() -> void:
 	is_level_active = false
 	is_speaking = true
 
-	if player_mistakes <= 2:
+	# Зупиняємо гул лампи при фіналі, якщо він грав
+	play_hum(false)
+
+	# --- ТУТ ЗМІНЮЄМО УМОВУ ---
+	# Якщо помилок 0 або 1 — добра кінцівка. Якщо більше 1 (2, 3 і т.д.) — погана.
+	if player_mistakes <= 1:
 		dialogue_queue = [
 			"Інспектор: 'Операторе... перевірку завершено.'",
-			"Інспектор: 'Ви припустилися незначної кількості помилок. Результат прийнятний.'",
+			"Інспектор: 'Ви припустилися мінімальної кількості помилок. Результат прийнятний.'",
 			"Інспектор: 'Зафіксовано успішне проходження зміни. Доступ до виходу дозволено.'",
 			"Інспектор: 'Дякую за службу, операторе. Ви можете залишити приміщення.'",
 			"Інспектор: 'І ще одне... Не повертайтеся сюди.'"
 		]
 	else:
 		dialogue_queue = [
-			"Інспектор: 'Операторе... за результатами перевірки виявлено критичну кількість помилок.'",
+			"Інспектор: 'Операторе... за результатами перевірки виявлено занадто багато помилок.'",
 			"Інспектор: 'Ви більше не можете виконувати свої обов'язки. Відповідно до протоколу...'",
 			"Піддослідний: 'Тепер ти розумієш? Тут ніхто нікого не перевіряє.'",
 			"Інспектор (кричить): 'ПІДГОТУВАТИ НОВОГО ПІДДОСЛІДНОГО!'"
@@ -371,12 +426,65 @@ func run_ending_sequence() -> void:
 			run_ending_sequence()
 		)
 	else:
-		if dialogue_layer: dialogue_layer.visible = true
-		if dialogue_label:
-			dialogue_label.visible_ratio = 1.0
-			if player_mistakes <= 2:
-				dialogue_label.text = "[indent]ЗМІНУ ЗАВЕРШЕНО\nКІНЕЦЬ № 1 — ДОПУЩЕНИЙ ДО ЗВІЛЬНЕННЯ[/indent]"
-			else:
-				dialogue_label.text = "[indent]ПЕРЕВІРКУ НЕ ПРОЙДЕНО\nКІНЕЦЬ № 2 — ПЕРЕДВЕДЕНИЙ ДО ОБ'ЄКТА[/indent]"
-		if room_light:
-			room_light.light_energy = 0.0
+		# Очищаємо діалогове вікно перед фінальним ефектом
+		if dialogue_layer:
+			dialogue_layer.visible = false
+			
+		# --- ВИКЛИКАЄМО НОВИЙ CONTROLLER КІНЦІВОК ---
+		if player_mistakes <= 1:
+			get_tree().call_group("ending_controller", "trigger_good_ending")
+		else:
+			get_tree().call_group("ending_controller", "trigger_bad_ending")
+func _input(event: InputEvent) -> void:
+	# Нажмите клавишу F1 на клавиатуре для проверки ДОВОЙ концовки
+	if event.is_action_pressed("ui_f1") or (event is InputEventKey and event.pressed and event.keycode == KEY_F1):
+		print("ТЕСТ: Принудительный запуск доброй концовки")
+		player_mistakes = 0 # Сбрасываем ошибки до нормы
+		trigger_game_ending()
+
+	# Нажмите клавишу F2 на клавиатуре для проверки ПЛОХОЙ концовки
+	if event.is_action_pressed("ui_f2") or (event is InputEventKey and event.pressed and event.keycode == KEY_F2):
+		print("ТЕСТ: Принудительный запуск плохой концовки")
+		player_mistakes = 5 # Накручиваем ошибки для срабатывания плохой концовки
+		trigger_game_ending()
+func load_progress(data: Dictionary) -> void:
+	current_level = clampi(
+		int(data.get("current_level", 1)),
+		1,
+		max_levels + 1
+	)
+
+	player_mistakes = int(data.get("mistakes", 0))
+	intro_played = bool(data.get("intro_played", false))
+
+	# Сбрасываем временное состояние текущего измерения
+	is_level_active = false
+	is_measurement_finished = false
+	is_speaking = false
+
+	jumps_done = 0
+	total_jumps_planned = 0
+	timer = 0.0
+
+	dialogue_queue.clear()
+
+	print("Прогресс восстановлен!")
+	print("Уровень: ", current_level)
+	print("Ошибки: ", player_mistakes)
+
+
+# Полный сброс новой игры
+func reset_progress() -> void:
+	current_level = 1
+	player_mistakes = 0
+	intro_played = false
+
+	is_level_active = false
+	is_measurement_finished = false
+	is_speaking = false
+
+	jumps_done = 0
+	total_jumps_planned = 0
+	timer = 0.0
+
+	dialogue_queue.clear()

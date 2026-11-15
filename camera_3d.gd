@@ -29,11 +29,20 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	# 2. Звичайний режим: обробка руху миші для огляду кімнати
 	if event is InputEventMouseMotion:
-		rotate_y(-event.relative.x * sensitivity)
-		
+		 # Получаем чувствительность из настроек игрока
+		var actual_sensitivity = sensitivity * SettingsManager.mouse_sensitivity
+
+		rotate_y(-event.relative.x * actual_sensitivity)
+
 		var current_rotation = rotation
-		current_rotation.x -= event.relative.y * sensitivity
-		current_rotation.x = clamp(current_rotation.x, deg_to_rad(-70), deg_to_rad(70))
+		current_rotation.x -= event.relative.y * actual_sensitivity
+
+		current_rotation.x = clamp(
+		current_rotation.x,
+		deg_to_rad(-70),
+		deg_to_rad(70)
+	)
+
 		rotation = current_rotation
 
 	# 3. Клік лівою кнопкою миші у звичайному режимі: намагаємося підняти предмет або натиснути кнопку
