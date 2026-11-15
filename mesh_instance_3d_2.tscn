@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://k6gfifqe2du0"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_cdqbm"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_x14cu"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_imku0"]
+resource_local_to_scene = true
+albedo_color = Color(0.18717614, 0.18717614, 0.18717614, 0.011764706)
+emission_enabled = true
+emission = Color(1.274, 1.274, 1.274, 1)
+emission_energy_multiplier = 15.0
+emission_operator = 1
+emission_texture = SubResource("ViewportTexture_x14cu")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" unique_id=1803227725]
+transform = Transform3D(0.465, 0, 0, 0, -1.6173214e-08, -0.41, 0, 0.37, -1.792167e-08, 0, 0, 0)
+mesh = SubResource("PlaneMesh_cdqbm")
+surface_material_override/0 = SubResource("StandardMaterial3D_imku0")

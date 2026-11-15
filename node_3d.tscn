@@ -1,14 +1,33 @@
 [gd_scene format=3 uid="uid://0m5u2ifp8h44"]
 
 [ext_resource type="PackedScene" uid="uid://nw2l2m8kcgjn" path="res://tabel.tscn" id="1_a202f"]
+[ext_resource type="Script" uid="uid://hk3bh6gxtvrt" path="res://camera_3d.gd" id="1_cdqbm"]
 [ext_resource type="PackedScene" uid="uid://cucgqld2gspul" path="res://can_soup.tscn" id="2_noarx"]
 [ext_resource type="PackedScene" uid="uid://b4d4vxu21iacb" path="res://can_soup2.tscn" id="3_a0tk4"]
+[ext_resource type="Script" uid="uid://bngvog230huu3" path="res://interactable_button.gd" id="4_3v7ru"]
 [ext_resource type="PackedScene" uid="uid://dk7gnk2qkrhcw" path="res://tv.tscn" id="4_r3fl7"]
 [ext_resource type="PackedScene" uid="uid://bl2u4x4k8k2n3" path="res://character_09.tscn" id="5_jka67"]
 [ext_resource type="Texture2D" uid="uid://dgvoqxn4di0gu" path="res://Stone_tiles_04.png" id="6_i5arm"]
+[ext_resource type="Material" uid="uid://1lcyh216qxsk" path="res://new_standard_material_3d.tres" id="6_wlxy5"]
 [ext_resource type="Texture2D" uid="uid://df2ehqtkesyhh" path="res://Stone_tiled_bricks_12.png" id="7_wc5p8"]
 [ext_resource type="Texture2D" uid="uid://83b2fqevp6an" path="res://Stone_tiled_bricks_01.png" id="8_jsk3o"]
-[ext_resource type="PackedScene" uid="uid://bu15pelyxppwo" path="res://phone.fbx" id="9_4arys"]
+[ext_resource type="PackedScene" uid="uid://pxku2bjwg2mu" path="res://source/ClipBoard.fbx" id="10_tereu"]
+[ext_resource type="Script" uid="uid://djf0dno2glkia" path="res://area_3d.gd" id="11_cdqbm"]
+[ext_resource type="Script" uid="uid://b8shwufcfygp6" path="res://line_2d.gd" id="13_imku0"]
+[ext_resource type="Script" uid="uid://wnibtqun2pej" path="res://main_menu.gd" id="14_i0g27"]
+[ext_resource type="PackedScene" uid="uid://bwtx4xm4hqs30" path="res://phone.tscn" id="15_3v7ru"]
+[ext_resource type="FontFile" uid="uid://dh2wom64axxi6" path="res://PixelOperator.ttf" id="15_ealrb"]
+[ext_resource type="Script" uid="uid://ct68br2bhb43k" path="res://level_manager.gd" id="16_tcnuu"]
+[ext_resource type="Script" uid="uid://bbps2c5c1n260" path="res://phone.gd" id="16_tuemg"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_i0g27"]
+dof_blur_far_enabled = true
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_hjetu"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_x14cu"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_cdqbm"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_wc5p8"]
 
@@ -40,12 +59,39 @@ texture_filter = 0
 
 [sub_resource type="Environment" id="Environment_hjetu"]
 background_mode = 1
+tonemap_mode = 3
+ssao_enabled = true
+glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jxpwx"]
+size = Vector3(1, 1.0356445, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jxpwx"]
+bg_color = Color(0.95686275, 0.92156863, 0.8156863, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cdqbm"]
+load_path = "res://.godot/imported/Backgroudn.png-c67803a4001267bed90242d8196b10fc.ctex"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hjetu"]
 
 [node name="Node3D" type="Node3D" unique_id=1118073595]
 
+[node name="Marker3D2" type="Marker3D" parent="." unique_id=1179973531]
+transform = Transform3D(0.4, 0, 0, 0, 0.36103413, 0.17220445, 0, -0.17220445, 0.36103413, 0, 2.474, 1.572)
+
 [node name="Camera3D" type="Camera3D" parent="." unique_id=919060322]
-transform = Transform3D(1, 0, 0, 0, 0.9025321, 0.43062246, 0, -0.43062246, 0.9025321, -0.007846832, 2.4738128, 1.561557)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.007846832, 2.4738128, 5.623458)
+attributes = SubResource("CameraAttributesPractical_i0g27")
 current = true
+script = ExtResource("1_cdqbm")
+
+[node name="InteractionRay" type="RayCast3D" parent="Camera3D" unique_id=1960409408]
+target_position = Vector3(0, 0, -2.5)
+collide_with_areas = true
 
 [node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1739438582]
 transform = Transform3D(1, 0, 0, 0, 0.20546722, 0.97866404, 0, -0.97866404, 0.20546722, 0, 2.758724, 0.42971337)
@@ -84,14 +130,34 @@ spot_angle = 78.86
 [node name="Tabel" parent="." unique_id=1104612629 instance=ExtResource("1_a202f")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0.6701658, 0.36286187)
 
-[node name="button1" parent="." unique_id=2026353935 instance=ExtResource("2_noarx")]
+[node name="buttonT" parent="." unique_id=2026353935 instance=ExtResource("2_noarx")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.26, 1.2301657, 0.81286186)
 
-[node name="can_soup" parent="." unique_id=705807035 instance=ExtResource("3_a0tk4")]
+[node name="Area3D" type="Area3D" parent="buttonT" unique_id=1481561039]
+script = ExtResource("4_3v7ru")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="buttonT/Area3D" unique_id=814271155]
+transform = Transform3D(0.385, 0, 0, 0, 0.11, 0, 0, 0, 0.385, 0, 0, 0)
+shape = SubResource("CylinderShape3D_hjetu")
+
+[node name="buttonF" parent="." unique_id=705807035 instance=ExtResource("3_a0tk4")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.26, 1.2301657, 0.81286186)
+
+[node name="Area3D" type="Area3D" parent="buttonF" unique_id=1448058467]
+script = ExtResource("4_3v7ru")
+button_type = "ЛОЖЬ"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="buttonF/Area3D" unique_id=899166468]
+transform = Transform3D(0.395, 0, 0, 0, 0.1, 0, 0, 0, 0.395, 0, 0, 0)
+shape = SubResource("CylinderShape3D_x14cu")
 
 [node name="Tv" parent="." unique_id=382501209 instance=ExtResource("4_r3fl7")]
 transform = Transform3D(0.755, 0, 0, 0, 0.755, 0, 0, 0, 0.755, -0.03041315, 1.7150357, -0.2387656)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Tv" unique_id=944068849]
+transform = Transform3D(0.465, 0, 0, 0, -1.6173214e-08, -0.41, 0, 0.37, -1.792167e-08, 0, 0, 0.4735381)
+mesh = SubResource("PlaneMesh_cdqbm")
+surface_material_override/0 = ExtResource("6_wlxy5")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=531902072]
 transform = Transform3D(6.268, 0, 0, 0, 13.92, 0, 0, 0, 0.093, 0, 0.6701658, -4.67)
@@ -102,7 +168,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_r3fl7")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1275942, -5.589)
 
 [node name="pol" type="MeshInstance3D" parent="." unique_id=388411222]
-transform = Transform3D(6.89, 0, 0, 0, 6.89, 0, 0, 0, 6.89, 0, 0, 0)
+transform = Transform3D(6.852907, 0, 0, 0, 9.061443, 0, 0, 0, 6.852907, 0, 0, 0)
 mesh = SubResource("PlaneMesh_hjetu")
 surface_material_override/0 = SubResource("StandardMaterial3D_egaxo")
 
@@ -112,7 +178,7 @@ mesh = SubResource("PlaneMesh_hjetu")
 surface_material_override/0 = SubResource("StandardMaterial3D_jsk3o")
 
 [node name="wall2" type="MeshInstance3D" parent="." unique_id=1424289565]
-transform = Transform3D(-3.0117147e-07, -6.89, -3.0117147e-07, 0, -3.0117147e-07, 6.89, -6.89, 3.0117147e-07, 1.31646225e-14, 4.386759, 0, 0)
+transform = Transform3D(-3.0117147e-07, -6.89, -3.0117147e-07, 0, -3.0117147e-07, 6.89, -6.89, 3.0117147e-07, 1.31646225e-14, 4.386759, 0.024486542, 0)
 mesh = SubResource("PlaneMesh_hjetu")
 surface_material_override/0 = SubResource("StandardMaterial3D_jsk3o")
 
@@ -128,12 +194,202 @@ size = Vector3(1.7042236, 1.8828125, 1)
 material = SubResource("StandardMaterial3D_hjetu")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D2" unique_id=1789502464]
-transform = Transform3D(0.5667634, 0, 0, 0, 0.5667634, 0, 0, 0, 78.1, 0, 0.038178533, 18.39502)
+transform = Transform3D(0.56676334, 0, 0, 0, 0.56676334, 0, 0, 0, 78.1, -0.00023753618, 0.03511542, 18.549011)
 operation = 2
 size = Vector3(1, 1, 1.4923096)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=448268753]
 environment = SubResource("Environment_hjetu")
 
-[node name="phone" parent="." unique_id=1775934888 instance=ExtResource("9_4arys")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8165312, 1.2405264, 0)
+[node name="list" parent="." unique_id=1171468117 instance=ExtResource("10_tereu")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.8842463, 1.2183435, 0.6835624)
+
+[node name="Area3D" type="Area3D" parent="list" unique_id=1307091679 node_paths=PackedStringArray("rules_ui")]
+script = ExtResource("11_cdqbm")
+rules_ui = NodePath("../../RulesUI")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="list/Area3D" unique_id=1339459203]
+transform = Transform3D(0.9514067, 0, 0, 0, 0.11627139, 0, 0, 0, 1.4326292, -0.003181696, 0.06275582, 0.15808785)
+shape = SubResource("BoxShape3D_jxpwx")
+
+[node name="RulesUI" type="CanvasLayer" parent="." unique_id=1407379807]
+
+[node name="Control" type="Control" parent="RulesUI" unique_id=603166226]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1155.0
+offset_bottom = 663.0
+mouse_filter = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="RulesUI/Control" unique_id=536247214]
+layout_mode = 0
+offset_left = 425.0
+offset_top = 156.0
+offset_right = 725.0
+offset_bottom = 568.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jxpwx")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="RulesUI/Control" unique_id=1380495209]
+layout_mode = 0
+offset_left = 427.0
+offset_top = 159.0
+offset_right = 726.0
+offset_bottom = 565.0
+mouse_filter = 1
+theme_override_colors/default_color = Color(0.16862746, 0.16862746, 0.16862746, 1)
+bbcode_enabled = true
+text = "[center][b][color=#8b0000]УПРАВЛІННЯ № 04-Б[/color][/b]
+[color=#555555]ТАЄМНО. ДЛЯ СЛУЖБОВОГО КОРИСТУВАННЯ[/color][/center]
+
+[center][b]ПАМ'ЯТКА ОПЕРАТОРА[/b][/center]
+
+[b]Порядок перевірки достовірності показань:[/b]
+1. Уважно вислухайте показання піддослідного.
+2. Спостерігайте за показниками осцилографа протягом усієї відповіді.
+3. Стабільна лінія без різких відхилень свідчить про [color=#006600][b]ПРАВДУ[/b][/color].
+4. Три або більше різких виходів показників у червону зону свідчать про [color=#aa0000][b]БРЕХНЮ[/b][/color].
+5. Металевий зрив голосу вважати додатковою ознакою обману.
+
+[b]ПОРЯДОК ПРИЙНЯТТЯ РІШЕННЯ[/b]
+• [color=#006600][b]ПРАВДА[/b][/color] — натиснути кнопку «ПРОПУСТИТИ».
+• [color=#aa0000][b]БРЕХНЯ[/b][/color] — натиснути кнопку «РОЗРЯД».
+
+[b][color=#aa0000]УВАГА![/color][/b]
+- Не приймайте рішення до завершення показань.
+- Не відволікайтеся на сторонні звуки.
+- У разі появи аварійного сигналу зберігайте спокій.
+- Не залишайте робочого місця до завершення сеансу.
+
+[center][b][color=#aa0000]ПОМИЛКА ОПЕРАТОРА НЕ ЗВІЛЬНЯЄ ВІД ВІДПОВІДАЛЬНОСТІ.[/color][/b][/center]
+
+[center][font_size=12][color=#666666]ВІДДІЛ ТЕХНІЧНОГО КОНТРОЛЮ • ПРИМІРНИК № 17[/color][/font_size][/center]
+[center][b]ПАМ'ЯТАЙТЕ: ПРИЛАД НЕ ПОМИЛЯЄТЬСЯ.[/b][/center]
+
+
+[color=#ff3333][i]«ВОНИ ПОЧИНАЮТЬ РОЗУМІТИ, ЩО ТИ РОБИШ…»[/i][/color]"
+
+[node name="hud" type="CanvasLayer" parent="." unique_id=148412640]
+
+[node name="Control" type="Control" parent="hud" unique_id=1049034190]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="hud/Control" unique_id=110764172]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = -14.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMenu" type="Control" parent="." unique_id=1899177226 node_paths=PackedStringArray("camera", "table_position", "black_screen", "hud")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 4.0
+offset_top = 3.0
+offset_right = 1150.0
+offset_bottom = 652.0
+script = ExtResource("14_i0g27")
+camera = NodePath("../Camera3D")
+table_position = NodePath("../Marker3D2")
+black_screen = NodePath("../blackscreen")
+hud = NodePath("../hud")
+
+[node name="TextureRect" type="TextureRect" parent="MainMenu" unique_id=900772130]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 2.0
+offset_right = 1143.0
+offset_bottom = 648.0
+texture = SubResource("CompressedTexture2D_cdqbm")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MainMenu" unique_id=964256320]
+layout_mode = 0
+offset_left = 808.0
+offset_top = 85.0
+offset_right = 1042.0
+offset_bottom = 169.0
+theme_override_colors/font_color = Color(0.8156863, 0.8156863, 0.8156863, 1)
+theme_override_fonts/font = ExtResource("15_ealrb")
+theme_override_font_sizes/font_size = 32
+text = "MAIN MENU"
+
+[node name="ButtonPlay" type="Button" parent="MainMenu" unique_id=1358811943]
+layout_mode = 0
+offset_left = 808.0
+offset_top = 153.0
+offset_right = 879.0
+offset_bottom = 190.0
+theme_override_colors/font_color = Color(0.8156863, 0.8156863, 0.8156863, 1)
+theme_override_fonts/font = ExtResource("15_ealrb")
+theme_override_font_sizes/font_size = 28
+text = "START"
+
+[node name="ButtonExit" type="Button" parent="MainMenu" unique_id=824914809]
+layout_mode = 0
+offset_left = 808.0
+offset_top = 237.0
+offset_right = 862.0
+offset_bottom = 274.0
+theme_override_colors/font_color = Color(0.8156863, 0.8156863, 0.8156863, 1)
+theme_override_fonts/font = ExtResource("15_ealrb")
+theme_override_font_sizes/font_size = 28
+text = "EXIT"
+
+[node name="ButtonOptions" type="Button" parent="MainMenu" unique_id=753652471]
+layout_mode = 0
+offset_left = 808.0
+offset_top = 195.0
+offset_right = 898.0
+offset_bottom = 232.0
+theme_override_fonts/font = ExtResource("15_ealrb")
+theme_override_font_sizes/font_size = 28
+text = "OPTIONS"
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=755942429]
+transparent_bg = true
+
+[node name="Line2D" type="Line2D" parent="SubViewport" unique_id=1434016428 groups=["graph"]]
+points = PackedVector2Array(0, 0, 0, 0)
+default_color = Color(0, 1, 0, 1)
+script = ExtResource("13_imku0")
+
+[node name="Line2D2" type="Line2D" parent="SubViewport" unique_id=1000030136]
+points = PackedVector2Array(0, 100, 512, 100)
+default_color = Color(1, 0, 0, 1)
+
+[node name="phone" parent="." unique_id=1954600424 instance=ExtResource("15_3v7ru")]
+transform = Transform3D(1.5949515, 0, -0.47786465, 0, 1.665, 0, 0.47786465, 0, 1.5949515, 0.8678503, 1.2301519, 0.4566698)
+
+[node name="Area3D" type="Area3D" parent="phone" unique_id=1835586386]
+script = ExtResource("16_tuemg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="phone/Area3D" unique_id=1091375335]
+transform = Transform3D(0.22999999, 0, 7.450581e-09, 0, 0.23000003, 0, -7.450581e-09, 0, 0.22999999, 0, 0.055000007, 0)
+shape = SubResource("BoxShape3D_hjetu")
+
+[node name="LevelManager" type="Node" parent="." unique_id=1892336345 groups=["level"]]
+script = ExtResource("16_tcnuu")
+
+[node name="blackscreen" type="ColorRect" parent="." unique_id=1455561089]
+visible = false
+offset_right = 1146.0
+offset_bottom = 652.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[connection signal="pressed" from="MainMenu/ButtonPlay" to="MainMenu" method="_on_button_play_pressed"]
+[connection signal="pressed" from="MainMenu/ButtonExit" to="MainMenu" method="_on_button_exit_pressed"]

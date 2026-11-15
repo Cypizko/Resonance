@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bwtx4xm4hqs30"]
+
+[ext_resource type="PackedScene" uid="uid://bu15pelyxppwo" path="res://phone.fbx" id="1_lnqov"]
+[ext_resource type="Texture2D" uid="uid://ct78c2yyb6hjh" path="res://button.jpg" id="2_3rj5o"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q7kt7"]
+albedo_color = Color(0.32544088, 0.3254409, 0.32544088, 1)
+albedo_texture = ExtResource("2_3rj5o")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rh8e7"]
+albedo_color = Color(0.3254902, 0.3254902, 0.3254902, 1)
+albedo_texture = ExtResource("2_3rj5o")
+
+[node name="phone" unique_id=1954600424 instance=ExtResource("1_lnqov")]
+
+[node name="phone" parent="." index="0" unique_id=2135159971]
+surface_material_override/0 = SubResource("StandardMaterial3D_q7kt7")
+
+[node name="phone_handset" parent="phone" index="0" unique_id=1944083110]
+surface_material_override/0 = SubResource("StandardMaterial3D_rh8e7")
