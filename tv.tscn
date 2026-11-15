@@ -8,17 +8,7 @@ albedo_texture = ExtResource("2_rlxh4")
 metallic_specular = 0.59
 texture_filter = 0
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_hjetu"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jka67"]
-albedo_color = Color(0.14147139, 0.14147139, 0.14147139, 0.5803922)
-
 [node name="Tv" unique_id=382501209 instance=ExtResource("1_06tmt")]
 
-[node name="Cube_001" parent="." index="0" unique_id=498700226]
+[node name="Cube_001" parent="." index="0" unique_id=1536227053]
 surface_material_override/0 = SubResource("StandardMaterial3D_vbfol")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="1" unique_id=1154562967]
-transform = Transform3D(0.465, 0, 0, 0, -1.6173214e-08, -0.41, 0, 0.37, -1.792167e-08, 0, 0, 0.4735381)
-mesh = SubResource("PlaneMesh_hjetu")
-surface_material_override/0 = SubResource("StandardMaterial3D_jka67")

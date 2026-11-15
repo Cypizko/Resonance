@@ -3,9 +3,11 @@ extends Area3D
 @export var target_node: Node3D 
 # Перетащите сюда узел RulesUI из панели сцены прямо в инспекторе!
 @export var rules_ui: CanvasLayer 
+@export var inspect_sound: AudioStream # Сюда можно перетащить звук шуршания бумаги в инспекторе
 
 var original_transform: Transform3D
 var is_picked_up: bool = false
+@onready var audio_player: AudioStreamPlayer3D = $AudioListPlayer3D # Автоматически находит узел плеера внутри Area3D
 
 func _ready() -> void:
 	if not target_node:
@@ -17,6 +19,13 @@ func _ready() -> void:
 	# Скрываем правила при старте игры, когда листок лежит на столе
 	if rules_ui:
 		rules_ui.visible = false
+		
+	# На случай, если узел называется иначе, ищем среди детей
+	if not audio_player:
+		for child in get_children():
+			if child is AudioStreamPlayer3D:
+				audio_player = child
+				break
 
 func toggle_inspect() -> void:
 	var current_camera = get_viewport().get_camera_3d()
@@ -27,6 +36,20 @@ func toggle_inspect() -> void:
 
 	is_picked_up = !is_picked_up
 	
+	# === ВОСПРОИЗВОДИМ ЗВУК ПРИ ПОДНЯТИИ ИЛИ ОПУСКАНИИ ===
+	if audio_player:
+		if inspect_sound:
+			audio_player.stream = inspect_sound
+		audio_player.stop()
+		audio_player.play()
+		
+		# Обрезаем звук через 0.4 секунды (длительность анимации), чтобы он не тянулся дольше нужного
+		get_tree().create_timer(0.4).timeout.connect(func():
+			if audio_player:
+				audio_player.stop()
+		)
+	# ====================================================
+
 	# Передаємо камері стан огляду та посилання на себе (self)
 	if current_camera.has_method("set_inspecting"):
 		current_camera.set_inspecting(is_picked_up, self)

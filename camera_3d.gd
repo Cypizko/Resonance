@@ -36,18 +36,25 @@ func _unhandled_input(event: InputEvent) -> void:
 		current_rotation.x = clamp(current_rotation.x, deg_to_rad(-70), deg_to_rad(70))
 		rotation = current_rotation
 
-	# 3. Клік лівою кнопкою миші у звичайному режимі: намагаємося підняти предмет, на який дивиться прицел
+	# 3. Клік лівою кнопкою миші у звичайному режимі: намагаємося підняти предмет або натиснути кнопку
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if interaction_ray and interaction_ray.is_colliding():
 			var collider = interaction_ray.get_collider()
 			
 			if collider:
+				# Спочатку перевіряємо, чи це об'єкт для огляду (наприклад, листок)
 				if collider.has_method("toggle_inspect"):
 					current_inspected_object = collider
 					collider.toggle_inspect()
 				elif collider.get_parent() and collider.get_parent().has_method("toggle_inspect"):
 					current_inspected_object = collider.get_parent()
 					current_inspected_object.toggle_inspect()
+				
+				# А тепер перевіряємо, чи це кнопка, яку можна натиснути
+				elif collider.has_method("press"):
+					collider.press()
+				elif collider.get_parent() and collider.get_parent().has_method("press"):
+					collider.get_parent().press()
 
 # Цю функцію викликає сам листок, коли змінює свій стан
 func set_inspecting(inspecting: bool, obj: Node = null) -> void:
